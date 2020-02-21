@@ -2,9 +2,9 @@
 Configuration for docs
 """
 
-# source_link = "https://github.com/[org_name]/kader"
-# docs_base_url = "https://[org_name].github.io/kader"
-# headline = "App that does everything"
+# source_link = "https://github.com/Muad96/kader2"
+# docs_base_url = "https://Muad96.github.io/kader"
+# headline = "HRMS APP"
 # sub_heading = "Yes, you got that right the first time, everything"
 
 def get_context(context):
