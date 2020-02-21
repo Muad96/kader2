@@ -36,7 +36,6 @@ def get_payroll_period(from_date, to_date, company):
     return payroll_period[0] if payroll_period else None
 
 
-
 @frappe.whitelist()
 def insert_email_alert(insert_list, document_type):
     insert_list = json.loads(insert_list)
