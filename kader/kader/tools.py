@@ -425,7 +425,7 @@ def add_violation_to_salaryslip(posting_date, start, end):
         print("ss name = {}".format(ss.name))
         print("v.amount = {}".format(d.amount))
         sd = frappe.get_doc({"doctype": "Salary Detail",
-                             "salary_component": "Dedactiom", "amount": d.amount})
+                             "salary_component": "Arabic text", "amount": d.amount})
         salary = frappe.get_doc({"Salary Slip", ss.name})
         salary.append("deductions", sd)
         salary.save()
@@ -508,7 +508,7 @@ def get_last_joining(employee):
 def get_leave_without_pay(employee):
     total_lwp = 0
     lwp_list = frappe.get_all("Leave Application", ["name", "total_leave_days"],
-                              filters={"employee": employee, "leave_type": "إجازة غير مدفوعة", "docstatus": "1"})
+                              filters={"employee": employee, "leave_type": "Arabic text", "docstatus": "1"})
 
     for lwp in lwp_list:
         total_lwp = total_lwp + lwp.total_leave_days
