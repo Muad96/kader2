@@ -415,6 +415,7 @@ def get_employee_deduction(employee, start_date, end_date):
     return deductions
 
 
+#Test: مخالفة عمل as Salary Component
 @frappe.whitelist()
 def add_violation_to_salaryslip(posting_date, start, end):
     deductions = get_deductions(start, end)
@@ -425,7 +426,7 @@ def add_violation_to_salaryslip(posting_date, start, end):
         print("ss name = {}".format(ss.name))
         print("v.amount = {}".format(d.amount))
         sd = frappe.get_doc({"doctype": "Salary Detail",
-                             "salary_component": "مخالفة عمل", "amount": d.amount})
+                             "salary_component": "Dedactiom", "amount": d.amount})
         salary = frappe.get_doc({"Salary Slip", ss.name})
         salary.append("deductions", sd)
         salary.save()
