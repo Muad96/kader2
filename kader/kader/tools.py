@@ -415,7 +415,6 @@ def get_employee_deduction(employee, start_date, end_date):
     return deductions
 
 
-#Test: مخالفة عمل as Salary Component
 @frappe.whitelist()
 def add_violation_to_salaryslip(posting_date, start, end):
     deductions = get_deductions(start, end)
