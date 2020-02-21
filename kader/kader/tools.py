@@ -29,13 +29,6 @@ def get_default_payroll_payable_account(self):
     return payroll_payable_account
 
 
-def get_payroll_period(from_date, to_date, company):
-    payroll_period = frappe.db.sql("""select name, start_date, end_date from
-        `tabPayroll Period`
-        where start_date<=%s and end_date>= %s and company=%s""", (from_date, to_date, company), as_dict=1)
-    return payroll_period[0] if payroll_period else None
-
-
 @frappe.whitelist()
 def insert_email_alert(insert_list, document_type):
     insert_list = json.loads(insert_list)
