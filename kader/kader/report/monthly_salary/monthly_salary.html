@@ -1,0 +1,124 @@
+<div style="margin-bottom: 7px;" class="text-center">
+    {%= frappe.boot.letter_heads[filters.letter_head || frappe.defaults.get_default("letter_head")] %}
+</div>
+<h4 class="text-center">{%= __("كشف الرواتب") %}</h4>
+<hr>
+<table class="table table-bordered">
+        <tr>
+            <td style="text-align: center">{%= (filters.company) %} {%= (" - ") %} {%= (filters.branch) %}</td>
+            <td style="text-align: center">{%= __("الشركة") %}</td>
+            <td style="text-align: center">{%= frappe.datetime.str_to_user(filters.to_date) %}</td>
+            <td style="text-align: center">{%= __("حتى") %}</td>
+            <td style="text-align: center">{%= frappe.datetime.str_to_user(filters.from_date) %}</td>
+            <td style="text-align: center">{%= __("من") %}</td>
+        </tr>
+    </table>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th style="text-align: center; width: 18%">
+                {%= __("الموظف") %}</th>
+            <!--<th style="text-align: center; width: 5%">
+                {%= __("التقييم") %}</th>-->
+            <th style="text-align: center; width: 5%">
+                {%= __("الأيام") %}</th>
+            <th style="text-align: center; width: 14%">
+                {%= __("تفاصيل الراتب") %}</th>
+            <th style="text-align: center; width: 14%">
+                {%= __("حسميات") %}</th>
+            <th style="text-align: center; width: 12%">
+                {%= __("معاشات/أخطار") %}
+            </th>
+            <th style="text-align: center; width: 14%">
+                {%= __("المستحق") %}</th>
+            <th style="text-align: center; width: 17%">
+                {%= __("ملاحظات") %}</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for(var i=0, l=data.length; i<l; i++) { %}
+        <tr>
+            <td>{%= data[i]["الموظف"] %}</td>
+            <!--<td class="text-center">{%= data[i]["التقييم"] %}</td>-->
+            <td class="text-center">{%= data[i]["عدد الأيام"] %}</td>
+            <td style="text-align: right">
+                {% if(data[i]["أساسي"]) { %}
+                {{ __("أساسي") }}: {%= format_number(data[i]["أساسي"]) %} <br>
+                {% } %}
+                {% if(data[i]["سكن"]) { %}
+                {{ __("سكن") }}: {%= format_number(data[i]["سكن"]) %} <br>
+                {% } %}
+                {% if(data[i]["نقل"]) { %}
+                {{ __("نقل") }}: {%= format_number(data[i]["نقل"]) %} <br>
+                {% } %}
+                {% if(data[i]["إعاشة"]) { %}
+                {{ __("إعاشة") }}: {%= format_number(data[i]["إعاشة"]) %} <br>
+                {% } %}
+                {% if(data[i]["أخرى"]) { %}
+                {{ __("أخرى") }}: {%= format_number(data[i]["أخرى"]) %} <br>
+                {% } %}
+                {% if(data[i]["تسوية"]) { %}
+                {{ __("تسوية") }}: {%= format_number(data[i]["تسوية"]) %} <br>
+                {% } %}
+                {% if(data[i]["المستحق"]) { %}
+                <b>{{ __("إجمالي") }}: {%= format_currency(data[i]["المستحق"]) %}</b>
+                {% } %}
+
+            </td>
+            <td style="text-align: right">
+                {% if(data[i]["GOSI"]) { %}
+                {{ __("تأمينات") }}: {%= format_number(data[i]["GOSI"]) %} <br>
+                {% } %}
+                {% if(data[i]["غياب"]) { %}
+                {{ __("غياب") }}: {%= format_number(data[i]["غياب"]) %} <br>
+                {% } %}
+                {% if(data[i]["سلف"]) { %}
+                {{ __("سلفة") }}: {%= format_number(data[i]["سلف"]) %} <br>
+                {% } %}
+                {% if(data[i]["تصفية إجازة"]) { %}
+                {{ __("تصفية إجازة") }}: {%= format_number(data[i]["تصفية إجازة"]) %} <br>
+                {% } %}
+                {% if(data[i]["سلفة"]) { %}
+                {{ __("سلفة") }}: {%= format_number(data[i]["سلفة"]) %} <br>
+                {% } %}
+                {% if(data[i]["مخالفة عمل"]) { %}
+                {{ __("مخالفة عمل") }}: {%= format_number(data[i]["مخالفة عمل"]) %} <br>
+                {% } %}
+                {% if(data[i]["تأخر ساعات عمل"]) { %}
+                {{ __("تأخر ساعات عمل") }}: {%= format_number(data[i]["تأخر ساعات عمل"]) %} <br>
+                {% } %}
+                {% if(data[i]["جزاء"]) { %}
+                {{ __("جزاء") }}: {%= format_number(data[i]["جزاء"]) %} <br>
+                {% } %}
+                {% if(data[i]["الحسميات"]) { %}
+                <b>{{ __("إجمالي") }}: {%= format_currency(data[i]["الحسميات"]) %}</b>
+                {% } %}
+            </td>
+            <td style="text-align: right">
+                {%= format_currency(data[i]["GOSI(C)"]) %}</td>
+            <td style="text-align: right">
+                {%= format_currency(data[i]["الصافي"]) %}</td>
+            <td style="text-align: right">
+                {%= data[i]["ملاحظات"] %}</td>
+
+        </tr>
+        {% } %}
+    </tbody>
+</table>
+<table class="table table-bordered">
+    <tr>
+        <th class="text-center">الموارد البشرية</th>
+        <th class="text-center">قسم الحسابات</th>
+        <th class="text-center">الإدارة المالية</th>
+        <th class="text-center">المدير العام</th>
+    </tr>
+    <tr>
+        <td class="text-center"> <br></td>
+        <td class="text-center"><br></td>
+        <td class="text-center"><br></td>
+        <td class="text-center"><br></td>
+    </tr>
+</table>
+<p class="text-right text-muted">Printed On {%= frappe.datetime.str_to_user(frappe.datetime.get_datetime_as_string()) %}
+</p>

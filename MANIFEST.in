@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include kader *.css
+recursive-include kader *.csv
+recursive-include kader *.html
+recursive-include kader *.ico
+recursive-include kader *.js
+recursive-include kader *.json
+recursive-include kader *.md
+recursive-include kader *.png
+recursive-include kader *.py
+recursive-include kader *.svg
+recursive-include kader *.txt
+recursive-exclude kader *.pyc
