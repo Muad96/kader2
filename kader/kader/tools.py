@@ -41,7 +41,7 @@ def insert_email_alert(insert_list, document_type):
     insert_list = json.loads(insert_list)
     for state_row in insert_list:
         for key, value in state_row.iteritems():
-            print ("{0} = {1}".format(key, value))
+            print("{0} = {1}".format(key, value))
             if (key == "state"):
                 state = value
             if (key == "email_by_role"):
@@ -52,8 +52,8 @@ def insert_email_alert(insert_list, document_type):
                 subject = value
             if (key == "message"):
                 message = value
-        print ("---------------------")
-        print ("state = {0} email_by_role = {1} message = {2}".format(
+        print("---------------------")
+        print("state = {0} email_by_role = {1} message = {2}".format(
             state, email_by_role, message))
         doc = frappe.get_doc({
             "doctype":
@@ -400,35 +400,37 @@ def add_timesheet_summary(project):
                                 })
     return sheetList
 
+
 @frappe.whitelist()
 def get_deductions(start, end):
-    deductions = frappe.get_list("Deduction", fields=["*"], filters={"docstatus":"1",
-        "posting_date": ["between", [start, end]]})
+    deductions = frappe.get_list("Deduction", fields=["*"], filters={"docstatus": "1",
+                                                                     "posting_date": ["between", [start, end]]})
     return deductions
-    
+
 
 @frappe.whitelist()
 def get_appraisal(start, end):
-    appraisal = frappe.get_list("Appraisal", fields=["*"], filters={"docstatus":"1",
-        "start_date": ["between", [start, end]]})
+    appraisal = frappe.get_list("Appraisal", fields=["*"], filters={"docstatus": "1",
+                                                                    "start_date": ["between", [start, end]]})
     return appraisal
 
+
 @frappe.whitelist()
-def get_employee_deduction(employee,start_date, end_date):
-    deductions = frappe.get_list("Deduction", fields=["*"], filters={"docstatus":"1","employee":employee,
-        "posting_date": ["between", [start_date, end_date]]})
+def get_employee_deduction(employee, start_date, end_date):
+    deductions = frappe.get_list("Deduction", fields=["*"], filters={"docstatus": "1", "employee": employee,
+                                                                     "posting_date": ["between", [start_date, end_date]]})
     return deductions
 
 
 @frappe.whitelist()
 def add_violation_to_salaryslip(posting_date, start, end):
     deductions = get_deductions(start, end)
-    print ("v = {}".format(frappe.as_json(deductions)))
+    print("v = {}".format(frappe.as_json(deductions)))
     for d in deductions:
         ss = frappe.get_list("Salary Slip", fields=["*"], filters={
             "posting_date": posting_date, "status": "draft", "employee": d.employee})[0]
-        print ("ss name = {}".format(ss.name))
-        print ("v.amount = {}".format(d.amount))
+        print("ss name = {}".format(ss.name))
+        print("v.amount = {}".format(d.amount))
         sd = frappe.get_doc({"doctype": "Salary Detail",
                              "salary_component": "مخالفة عمل", "amount": d.amount})
         salary = frappe.get_doc({"Salary Slip", ss.name})
@@ -441,12 +443,12 @@ def add_violation_to_salaryslip(posting_date, start, end):
 @frappe.whitelist()
 def add_Appraisal_to_salaryslip(posting_date, start, end):
     appraisal = get_appraisal(start, end)
-    print ("v = {}".format(frappe.as_json(appraisal)))
+    print("v = {}".format(frappe.as_json(appraisal)))
     for d in appraisal:
         ss = frappe.get_list("Salary Slip", fields=["*"], filters={
             "posting_date": posting_date, "status": "draft", "employee": d.employee})[0]
-        print ("ss name = {}".format(ss.name))
-        print ("v.amount = {}".format(d.total_score))
+        print("ss name = {}".format(ss.name))
+        print("v.amount = {}".format(d.total_score))
         salary = frappe.get_doc("Salary Slip", ss.name)
         salary.appraisal = d.name
         salary.performance = d.total_score
@@ -478,6 +480,7 @@ def get_full_salary(employee, start_date, end_date):
         frappe.throw(
             _("Please create Salary Structure for employee {}".format(employee)))
 
+
 @frappe.whitelist()
 def get_daily_rate(employee, start_date, end_date):
     doc = get_full_salary(employee, start_date, end_date)
@@ -502,23 +505,26 @@ def get_month_days(employee, start_date, end_date):
 
 @frappe.whitelist()
 def get_last_joining(employee):
-    d = frappe.get_all("Joining Work", ["name"],filters={"employee":employee}, order_by="creation desc", limit_page_length=1)
+    d = frappe.get_all("Joining Work", ["name"], filters={
+                       "employee": employee}, order_by="creation desc", limit_page_length=1)
     if d:
         return frappe.get_doc("Joining Work", d[0].name)
+
 
 @frappe.whitelist()
 def get_leave_without_pay(employee):
     total_lwp = 0
-    lwp_list = frappe.get_all("Leave Application", ["name","total_leave_days"],
-    filters={"employee":employee,"leave_type":"إجازة غير مدفوعة","docstatus": "1"})
+    lwp_list = frappe.get_all("Leave Application", ["name", "total_leave_days"],
+                              filters={"employee": employee, "leave_type": "إجازة غير مدفوعة", "docstatus": "1"})
 
     for lwp in lwp_list:
         total_lwp = total_lwp + lwp.total_leave_days
     return total_lwp
 
+
 @frappe.whitelist()
-def get_last_settlement(doctype,employee):
-    last_settlement = frappe.get_all(doctype, "name", filters={"employee":employee,"docstatus": "1"},
-    order_by="creation desc", limit_page_length=1)
+def get_last_settlement(doctype, employee):
+    last_settlement = frappe.get_all(doctype, "name", filters={"employee": employee, "docstatus": "1"},
+                                     order_by="creation desc", limit_page_length=1)
     if last_settlement:
         return frappe.get_doc(doctype, last_settlement[0].name)
