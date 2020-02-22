@@ -421,6 +421,8 @@ def get_employee_deduction(employee, start_date, end_date):
     return deductions
 
 
+#In case of error "Non-ASCII character '\xd9'" replcae the arabic text
+# This error only happend when installing the app
 @frappe.whitelist()
 def add_violation_to_salaryslip(posting_date, start, end):
     deductions = get_deductions(start, end)
@@ -431,7 +433,7 @@ def add_violation_to_salaryslip(posting_date, start, end):
         print("ss name = {}".format(ss.name))
         print("v.amount = {}".format(d.amount))
         sd = frappe.get_doc({"doctype": "Salary Detail",
-                             "salary_component": "Arabic text", "amount": d.amount})
+                             "salary_component": "مخالفة عمل", "amount": d.amount})
         salary = frappe.get_doc({"Salary Slip", ss.name})
         salary.append("deductions", sd)
         salary.save()
@@ -510,11 +512,14 @@ def get_last_joining(employee):
         return frappe.get_doc("Joining Work", d[0].name)
 
 
+
+#In case of error "Non-ASCII character '\xd9'" replcae the arabic text
+# This error only happend when installing the app
 @frappe.whitelist()
 def get_leave_without_pay(employee):
     total_lwp = 0
     lwp_list = frappe.get_all("Leave Application", ["name", "total_leave_days"],
-                              filters={"employee": employee, "leave_type": "Arabic text", "docstatus": "1"})
+                              filters={"employee": employee, "leave_type": "إجازة غير مدفوعة", "docstatus": "1"})
 
     for lwp in lwp_list:
         total_lwp = total_lwp + lwp.total_leave_days
